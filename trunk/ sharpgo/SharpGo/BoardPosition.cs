@@ -41,6 +41,11 @@ namespace SharpGo
         /// <summary>
         /// 
         /// </summary>
+        private Group group = new Group();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int x
         {
             get
@@ -80,6 +85,21 @@ namespace SharpGo
             set
             {
                 contains = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Group Group
+        {
+            get
+            {
+                return group;
+            }
+            set
+            {
+                group = value;
             }
         }
 

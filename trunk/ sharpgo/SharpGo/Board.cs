@@ -24,6 +24,12 @@ namespace SharpGo
         /// <summary>
         /// 
         /// </summary>
+        private System.Collections.Generic.List<Group> groups =
+            new System.Collections.Generic.List<Group>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         private string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         /// <summary>
@@ -53,7 +59,7 @@ namespace SharpGo
         /// of liberties of a group on a board of size N^2 is
         /// 2/3 (N^2 + 1)
         /// </summary>
-        public readonly int MaxLiberties = (2 * (MaxBoardSize * MaxBoardSize + 1) / 3);
+        public const int MaxLiberties = (2 * (MaxBoardSize * MaxBoardSize + 1) / 3);
         #endregion
 
         #region Accessors
@@ -116,6 +122,21 @@ namespace SharpGo
                 move_number = value;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public System.Collections.Generic.List<Group> Groups
+        {
+            get
+            {
+                return groups;
+            }
+            set
+            {
+                groups = value;
+            }
+        }
         #endregion
 
         #region Methods
@@ -132,7 +153,7 @@ namespace SharpGo
             }
             catch(System.Exception e)
             {
-                throw e;
+                return null;
             }
         }
 
@@ -149,7 +170,7 @@ namespace SharpGo
             }
             catch(System.Exception e)
             {
-                throw e;
+                return null;
             }
         }
 
@@ -166,7 +187,7 @@ namespace SharpGo
             }
             catch (System.Exception e)
             {
-                throw e;
+                return null;
             }
         }
 
@@ -183,7 +204,7 @@ namespace SharpGo
             }
             catch (System.Exception e)
             {
-                throw e;
+                return null;
             }
         }
 
@@ -231,7 +252,7 @@ namespace SharpGo
             try
             {
                 return GetStone(pos.x - 1, pos.y - 1);
-            }
+               }
             catch (System.Exception e)
             {
                 throw e;
@@ -293,7 +314,24 @@ namespace SharpGo
             {
                 for (int y = 0; y < Size; y++)
                 {
-                    SetStone(x, y, BoardPositionEntry.EMTPY);
+                    board[x, y] = new BoardPosition(x, y, BoardPositionEntry.EMTPY);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        public Board(int s)
+        {
+            Size = s;
+            board = new BoardPosition[size, size];
+            for (int x = 0; x < Size; x++)
+            {
+                for (int y = 0; y < Size; y++)
+                {
+                    board[x, y] = new BoardPosition(x, y, BoardPositionEntry.EMTPY);
                 }
             }
         }
@@ -325,7 +363,183 @@ namespace SharpGo
                 throw new System.Exception("Position out of range");
             if (y < 0 || y >= size)
                 throw new System.Exception("Position out of range");
-            board[x, y] = new BoardPosition(x, y, entry);
+            if (board[x, y].Contains != entry)
+                board[x, y].Contains = entry;
+
+            ConnectToGroups(board[x, y]);
+            if (!CheckForFreeLiberties(board[x, y]))
+            {
+                System.Console.WriteLine("This move is not allowed!");
+            }
+
+            CheckSurroundingGroupsForDeath(board[x, y]);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ConnectToGroups(BoardPosition pos)
+        {
+            bool flag = false;
+
+            BoardPosition west = West(pos);
+            BoardPosition east = East(pos);
+            BoardPosition north = North(pos);
+            BoardPosition south = South(pos);
+
+            if (west != null)
+            {
+                if (west.Contains == pos.Contains)
+                {
+                    west.Group.AddToGroup(pos);
+                    if (east.Contains == pos.Contains
+                        && east.Group != pos.Group)
+                    {
+                        west.Group.JoinWithGroup(this, east.Group);
+                    }
+                    if (north.Contains == pos.Contains
+                        && north.Group != pos.Group)
+                    {
+                        west.Group.JoinWithGroup(this, north.Group);
+                    }
+                    if (south.Contains == pos.Contains
+                        && south.Group != pos.Group)
+                    {
+                        west.Group.JoinWithGroup(this, south.Group);
+                    }
+                    flag = true;
+                }
+            } 
+
+            if (east != null)
+            {
+                if (east.Contains == pos.Contains)
+                {
+                    east.Group.AddToGroup(pos);
+                    if (west.Contains == pos.Contains
+                        && west.Group != pos.Group)
+                    {
+                        east.Group.JoinWithGroup(this, west.Group);
+                    }
+                    if (north.Contains == pos.Contains
+                        && north.Group != pos.Group)
+                    {
+                        east.Group.JoinWithGroup(this, north.Group);
+                    }
+                    if (south.Contains == pos.Contains
+                        && south.Group != pos.Group)
+                    {
+                        east.Group.JoinWithGroup(this, south.Group);
+                    }
+                    flag = true;
+                }
+            }
+
+            if (north != null)
+            {
+                if (north.Contains == pos.Contains)
+                {
+                    north.Group.AddToGroup(pos);
+                    if (west.Contains == pos.Contains
+                        && west.Group != pos.Group)
+                    {
+                        north.Group.JoinWithGroup(this, west.Group);
+                    }
+                    if (east.Contains == pos.Contains
+                        && east.Group != pos.Group)
+                    {
+                        north.Group.JoinWithGroup(this, east.Group);
+                    }
+                    if (south.Contains == pos.Contains
+                        && south.Group != pos.Group)
+                    {
+                        north.Group.JoinWithGroup(this, south.Group);
+                    }
+                    flag = true;
+                }
+            }
+
+            if (south != null)
+            {
+                if (south.Contains == pos.Contains)
+                {
+                    south.Group.AddToGroup(pos);
+                    if (west.Contains == pos.Contains
+                        && west.Group != pos.Group)
+                    {
+                        south.Group.JoinWithGroup(this, west.Group);
+                    }
+                    if (east.Contains == pos.Contains
+                        && east.Group != pos.Group)
+                    {
+                        south.Group.JoinWithGroup(this, east.Group);
+                    }
+                    if (north.Contains == pos.Contains
+                        && north.Group != pos.Group)
+                    {
+                        south.Group.JoinWithGroup(this, north.Group);
+                    }
+                    flag = true;
+                }
+            }
+
+            if (!flag)
+            {
+                pos.Group = new Group();
+                pos.Group.AddToGroup(pos);
+                Groups.Add(pos.Group);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public bool CheckForFreeLiberties(BoardPosition pos)
+        {
+            if (pos.Group.GetFreeLiberties(this) == 0)
+            {
+                pos.Group.RemoveGroup(this);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos"></param>
+        public void CheckSurroundingGroupsForDeath(BoardPosition pos)
+        {
+            BoardPosition west = West(pos);
+            BoardPosition east = East(pos);
+            BoardPosition north = North(pos);
+            BoardPosition south = South(pos);
+
+            if (west != null)
+            {
+                if (!CheckForFreeLiberties(west))
+                    west.Group.RemoveGroup(this);
+            }
+
+            if (east != null)
+            {
+                if (!CheckForFreeLiberties(west))
+                    east.Group.RemoveGroup(this);
+            }
+
+            if (north != null)
+            {
+                if (!CheckForFreeLiberties(west))
+                    north.Group.RemoveGroup(this);
+            }
+
+            if (south != null)
+            {
+                if (!CheckForFreeLiberties(west))
+                    south.Group.RemoveGroup(this);
+            }
         }
 
         /// <summary>
@@ -334,11 +548,17 @@ namespace SharpGo
         /// <param name="pos"></param>
         public void SetStone(BoardPosition pos)
         {
-            if (pos.x < 0 || pos.x >= size)
-                throw new System.Exception("Position out of range");
-            if (pos.y < 0 || pos.y >= size)
-                throw new System.Exception("Position out of range");
-            board[pos.x, pos.y] = pos;
+            SetStone(pos.x, pos.y, pos.Contains);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos"></param>
+        public void RemoveStone(BoardPosition pos)
+        {
+            board[pos.x, pos.y].Contains = BoardPositionEntry.EMTPY;
+            board[pos.x, pos.y].Group = null;
         }
 
         /// <summary>
@@ -383,7 +603,9 @@ namespace SharpGo
                     if (x < 0 || y < 0)
                         continue;
                     BoardPosition pos = GetStone(x, y);
-                    if (pos.Contains == BoardPositionEntry.BLACK)
+                    if(pos == null)
+                        System.Console.Write(".");
+                    else if (pos.Contains == BoardPositionEntry.BLACK)
                         System.Console.Write("X");
                     else if (pos.Contains == BoardPositionEntry.WHITE)
                         System.Console.Write("O");
