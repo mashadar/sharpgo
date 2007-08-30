@@ -86,6 +86,16 @@ namespace SharpGo
         /// <summary>
         /// 
         /// </summary>
+        public BoardPosition()
+        {
+            x = 0;
+            y = 0;
+            Contains = BoardPositionEntry.EMTPY;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="entry"></param>
