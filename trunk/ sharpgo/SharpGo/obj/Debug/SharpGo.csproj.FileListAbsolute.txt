@@ -1,5 +1,0 @@
-C:\Dokumente und Einstellungen\rootnode\Eigene Dateien\Visual Studio 2008\Projects\SharpGo\SharpGo\bin\Debug\SharpGo.exe
-C:\Dokumente und Einstellungen\rootnode\Eigene Dateien\Visual Studio 2008\Projects\SharpGo\SharpGo\bin\Debug\SharpGo.pdb
-C:\Dokumente und Einstellungen\rootnode\Eigene Dateien\Visual Studio 2008\Projects\SharpGo\SharpGo\obj\Debug\ResolveAssemblyReference.cache
-C:\Dokumente und Einstellungen\rootnode\Eigene Dateien\Visual Studio 2008\Projects\SharpGo\SharpGo\obj\Debug\SharpGo.exe
-C:\Dokumente und Einstellungen\rootnode\Eigene Dateien\Visual Studio 2008\Projects\SharpGo\SharpGo\obj\Debug\SharpGo.pdb
