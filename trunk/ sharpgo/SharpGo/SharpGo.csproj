@@ -48,6 +48,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="BoardPosition.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
