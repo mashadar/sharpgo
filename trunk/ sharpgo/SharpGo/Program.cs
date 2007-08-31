@@ -13,14 +13,22 @@ namespace SharpGo
             Parser parser = new Parser();
             BoardPosition pos;
 
+            System.IO.TextReader sr = System.IO.File.OpenText("game.sgf");
+            string zeile;
+            while(sr.Peek() != -1)
+            {
+                zeile = sr.ReadLine();
+                BoardPosition p = parser.ParseString(zeile);
+                Console.WriteLine("Setting stone at " + p.x + "x" + p.y);
+                board.SetStone(p);
+            }
+
             while ((pos = parser.ParseString(Console.ReadLine())) != null)
             {
                 board.SetStone(pos);
                 System.Console.Clear();
                 board.PrintToConsole();
             }
-
-            System.Console.ReadKey();
         }
     }
 }
