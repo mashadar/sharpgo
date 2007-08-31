@@ -363,7 +363,8 @@ namespace SharpGo
                 throw new System.Exception("Position out of range");
             if (y < 0 || y >= size)
                 throw new System.Exception("Position out of range");
-            if (board[x, y].Contains != entry)
+
+            if (board[x, y].Contains == BoardPositionEntry.EMTPY)
                 board[x, y].Contains = entry;
 
             ConnectToGroups(board[x, y]);
@@ -498,10 +499,12 @@ namespace SharpGo
         /// <returns></returns>
         public bool CheckForFreeLiberties(BoardPosition pos)
         {
-            if (pos.Group.GetFreeLiberties(this) == 0)
+            if (pos != null && pos.Group != null)
             {
-                pos.Group.RemoveGroup(this);
-                return false;
+                if (pos.Group.GetFreeLiberties(this) == 0)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -525,19 +528,19 @@ namespace SharpGo
 
             if (east != null)
             {
-                if (!CheckForFreeLiberties(west))
+                if (!CheckForFreeLiberties(east))
                     east.Group.RemoveGroup(this);
             }
 
             if (north != null)
             {
-                if (!CheckForFreeLiberties(west))
+                if (!CheckForFreeLiberties(north))
                     north.Group.RemoveGroup(this);
             }
 
             if (south != null)
             {
-                if (!CheckForFreeLiberties(west))
+                if (!CheckForFreeLiberties(south))
                     south.Group.RemoveGroup(this);
             }
         }
@@ -614,6 +617,8 @@ namespace SharpGo
                 }
                 System.Console.WriteLine("");
             }
+            System.Console.WriteLine("White's captured stones: " + CapturedBlackStones);
+            System.Console.WriteLine("Black's captured stones: " + CapturedWhiteStones);
         }
         #endregion
     }
