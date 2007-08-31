@@ -96,39 +96,48 @@ namespace SharpGo
 
             foreach (BoardPosition pos in Stones)
             {
-                if (board.North(pos).Contains == BoardPositionEntry.EMTPY)
+                if (board.North(pos) != null)
                 {
-                    if (!marked[board.North(pos).x, board.North(pos).y])
+                    if (board.North(pos).Contains == BoardPositionEntry.EMTPY)
                     {
-                        liberties++;
-                        marked[board.North(pos).x, board.North(pos).y] = true;
+                        if (!marked[board.North(pos).x, board.North(pos).y])
+                        {
+                            liberties++;
+                            marked[board.North(pos).x, board.North(pos).y] = true;
+                        }
                     }
                 }
-
-                if (board.East(pos).Contains == BoardPositionEntry.EMTPY)
+                if (board.East(pos) != null)
                 {
-                    if (!marked[board.East(pos).x, board.East(pos).y])
+                    if (board.East(pos).Contains == BoardPositionEntry.EMTPY)
                     {
-                        liberties++;
-                        marked[board.East(pos).x, board.East(pos).y] = true;
+                        if (!marked[board.East(pos).x, board.East(pos).y])
+                        {
+                            liberties++;
+                            marked[board.East(pos).x, board.East(pos).y] = true;
+                        }
                     }
                 }
-
-                if (board.South(pos).Contains == BoardPositionEntry.EMTPY)
+                if (board.South(pos) != null)
                 {
-                    if (!marked[board.South(pos).x, board.South(pos).y])
+                    if (board.South(pos).Contains == BoardPositionEntry.EMTPY)
                     {
-                        liberties++;
-                        marked[board.South(pos).x, board.South(pos).y] = true;
+                        if (!marked[board.South(pos).x, board.South(pos).y])
+                        {
+                            liberties++;
+                            marked[board.South(pos).x, board.South(pos).y] = true;
+                        }
                     }
                 }
-
-                if (board.West(pos).Contains == BoardPositionEntry.EMTPY)
+                if (board.West(pos) != null)
                 {
-                    if (!marked[board.West(pos).x, board.West(pos).y])
+                    if (board.West(pos).Contains == BoardPositionEntry.EMTPY)
                     {
-                        liberties++;
-                        marked[board.West(pos).x, board.West(pos).y] = true;
+                        if (!marked[board.West(pos).x, board.West(pos).y])
+                        {
+                            liberties++;
+                            marked[board.West(pos).x, board.West(pos).y] = true;
+                        }
                     }
                 }
             }

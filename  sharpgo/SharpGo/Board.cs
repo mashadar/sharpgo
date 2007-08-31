@@ -393,10 +393,13 @@ namespace SharpGo
                 if (west.Contains == pos.Contains)
                 {
                     west.Group.AddToGroup(pos);
-                    if (east.Contains == pos.Contains
-                        && east.Group != pos.Group)
+                    if (east != null)
                     {
-                        west.Group.JoinWithGroup(this, east.Group);
+                        if (east.Contains == pos.Contains
+                            && east.Group != pos.Group)
+                        {
+                            west.Group.JoinWithGroup(this, east.Group);
+                        }
                     }
                     if (north.Contains == pos.Contains
                         && north.Group != pos.Group)
@@ -417,15 +420,21 @@ namespace SharpGo
                 if (east.Contains == pos.Contains)
                 {
                     east.Group.AddToGroup(pos);
-                    if (west.Contains == pos.Contains
-                        && west.Group != pos.Group)
+                    if (west != null)
                     {
-                        east.Group.JoinWithGroup(this, west.Group);
+                        if (west.Contains == pos.Contains
+                            && west.Group != pos.Group)
+                        {
+                            east.Group.JoinWithGroup(this, west.Group);
+                        }
                     }
-                    if (north.Contains == pos.Contains
-                        && north.Group != pos.Group)
+                    if (north != null)
                     {
-                        east.Group.JoinWithGroup(this, north.Group);
+                        if (north.Contains == pos.Contains
+                            && north.Group != pos.Group)
+                        {
+                            east.Group.JoinWithGroup(this, north.Group);
+                        }
                     }
                     if (south.Contains == pos.Contains
                         && south.Group != pos.Group)
@@ -465,20 +474,29 @@ namespace SharpGo
                 if (south.Contains == pos.Contains)
                 {
                     south.Group.AddToGroup(pos);
-                    if (west.Contains == pos.Contains
-                        && west.Group != pos.Group)
+                    if (west != null)
                     {
-                        south.Group.JoinWithGroup(this, west.Group);
+                        if (west.Contains == pos.Contains
+                            && west.Group != pos.Group)
+                        {
+                            south.Group.JoinWithGroup(this, west.Group);
+                        }
                     }
-                    if (east.Contains == pos.Contains
-                        && east.Group != pos.Group)
+                    if (east != null)
                     {
-                        south.Group.JoinWithGroup(this, east.Group);
+                        if (east.Contains == pos.Contains
+                            && east.Group != pos.Group)
+                        {
+                            south.Group.JoinWithGroup(this, east.Group);
+                        }
                     }
-                    if (north.Contains == pos.Contains
-                        && north.Group != pos.Group)
+                    if (north != null)
                     {
-                        south.Group.JoinWithGroup(this, north.Group);
+                        if (north.Contains == pos.Contains
+                            && north.Group != pos.Group)
+                        {
+                            south.Group.JoinWithGroup(this, north.Group);
+                        }
                     }
                     flag = true;
                 }
