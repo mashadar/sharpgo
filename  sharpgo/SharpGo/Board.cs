@@ -379,6 +379,53 @@ namespace SharpGo
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="p3"></param>
+        /// <param name="p4"></param>
+        /// <param name="flag"></param>
+        protected void ConnectToGroupsHelper(ref BoardPosition pos,
+            ref BoardPosition p1, ref BoardPosition p2, ref BoardPosition p3,
+            ref BoardPosition p4, ref bool flag)
+        {
+            if (p1 != null)
+            {
+                if (p1.Contains == pos.Contains)
+                {
+                    p1.Group.AddToGroup(pos);
+                    if (p2 != null)
+                    {
+                        if (p2.Contains == pos.Contains
+                            && p2.Group != pos.Group)
+                        {
+                            p1.Group.JoinWithGroup(this, p2.Group);
+                        }
+                    }
+                    if (p3 != null)
+                    {
+                        if (p3.Contains == pos.Contains
+                            && p3.Group != pos.Group)
+                        {
+                            p1.Group.JoinWithGroup(this, p3.Group);
+                        }
+                    }
+                    if (p4 != null)
+                    {
+                        if (p4.Contains == pos.Contains
+                            && p4.Group != pos.Group)
+                        {
+                            p1.Group.JoinWithGroup(this, p4.Group);
+                        }
+                    }
+                    flag = true;
+                }
+            } 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void ConnectToGroups(BoardPosition pos)
         {
             bool flag = false;
@@ -388,119 +435,10 @@ namespace SharpGo
             BoardPosition north = North(pos);
             BoardPosition south = South(pos);
 
-            if (west != null)
-            {
-                if (west.Contains == pos.Contains)
-                {
-                    west.Group.AddToGroup(pos);
-                    if (east != null)
-                    {
-                        if (east.Contains == pos.Contains
-                            && east.Group != pos.Group)
-                        {
-                            west.Group.JoinWithGroup(this, east.Group);
-                        }
-                    }
-                    if (north.Contains == pos.Contains
-                        && north.Group != pos.Group)
-                    {
-                        west.Group.JoinWithGroup(this, north.Group);
-                    }
-                    if (south.Contains == pos.Contains
-                        && south.Group != pos.Group)
-                    {
-                        west.Group.JoinWithGroup(this, south.Group);
-                    }
-                    flag = true;
-                }
-            } 
-
-            if (east != null)
-            {
-                if (east.Contains == pos.Contains)
-                {
-                    east.Group.AddToGroup(pos);
-                    if (west != null)
-                    {
-                        if (west.Contains == pos.Contains
-                            && west.Group != pos.Group)
-                        {
-                            east.Group.JoinWithGroup(this, west.Group);
-                        }
-                    }
-                    if (north != null)
-                    {
-                        if (north.Contains == pos.Contains
-                            && north.Group != pos.Group)
-                        {
-                            east.Group.JoinWithGroup(this, north.Group);
-                        }
-                    }
-                    if (south.Contains == pos.Contains
-                        && south.Group != pos.Group)
-                    {
-                        east.Group.JoinWithGroup(this, south.Group);
-                    }
-                    flag = true;
-                }
-            }
-
-            if (north != null)
-            {
-                if (north.Contains == pos.Contains)
-                {
-                    north.Group.AddToGroup(pos);
-                    if (west.Contains == pos.Contains
-                        && west.Group != pos.Group)
-                    {
-                        north.Group.JoinWithGroup(this, west.Group);
-                    }
-                    if (east.Contains == pos.Contains
-                        && east.Group != pos.Group)
-                    {
-                        north.Group.JoinWithGroup(this, east.Group);
-                    }
-                    if (south.Contains == pos.Contains
-                        && south.Group != pos.Group)
-                    {
-                        north.Group.JoinWithGroup(this, south.Group);
-                    }
-                    flag = true;
-                }
-            }
-
-            if (south != null)
-            {
-                if (south.Contains == pos.Contains)
-                {
-                    south.Group.AddToGroup(pos);
-                    if (west != null)
-                    {
-                        if (west.Contains == pos.Contains
-                            && west.Group != pos.Group)
-                        {
-                            south.Group.JoinWithGroup(this, west.Group);
-                        }
-                    }
-                    if (east != null)
-                    {
-                        if (east.Contains == pos.Contains
-                            && east.Group != pos.Group)
-                        {
-                            south.Group.JoinWithGroup(this, east.Group);
-                        }
-                    }
-                    if (north != null)
-                    {
-                        if (north.Contains == pos.Contains
-                            && north.Group != pos.Group)
-                        {
-                            south.Group.JoinWithGroup(this, north.Group);
-                        }
-                    }
-                    flag = true;
-                }
-            }
+            ConnectToGroupsHelper(ref pos, ref west, ref east, ref north, ref south, ref flag);
+            ConnectToGroupsHelper(ref pos, ref east, ref west, ref north, ref south, ref flag);
+            ConnectToGroupsHelper(ref pos, ref north, ref west, ref east, ref south, ref flag);
+            ConnectToGroupsHelper(ref pos, ref south, ref west, ref east, ref north, ref flag);
 
             if (!flag)
             {
@@ -531,6 +469,28 @@ namespace SharpGo
         /// 
         /// </summary>
         /// <param name="pos"></param>
+        protected void CheckSurroundingGroupsForDeathHelper(ref BoardPosition pos)
+        {
+            if (pos == null)
+                return;
+
+            BoardPositionEntry entry = pos.Contains;
+            int size = 0;
+            if (pos != null)
+            {
+                if (!CheckForFreeLiberties(pos))
+                    size = pos.Group.RemoveGroup(this);
+            }
+            if (entry == BoardPositionEntry.BLACK)
+                CapturedBlackStones += size;
+            else if (entry == BoardPositionEntry.WHITE)
+                CapturedWhiteStones += size;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos"></param>
         public void CheckSurroundingGroupsForDeath(BoardPosition pos)
         {
             BoardPosition west = West(pos);
@@ -538,29 +498,10 @@ namespace SharpGo
             BoardPosition north = North(pos);
             BoardPosition south = South(pos);
 
-            if (west != null)
-            {
-                if (!CheckForFreeLiberties(west))
-                    west.Group.RemoveGroup(this);
-            }
-
-            if (east != null)
-            {
-                if (!CheckForFreeLiberties(east))
-                    east.Group.RemoveGroup(this);
-            }
-
-            if (north != null)
-            {
-                if (!CheckForFreeLiberties(north))
-                    north.Group.RemoveGroup(this);
-            }
-
-            if (south != null)
-            {
-                if (!CheckForFreeLiberties(south))
-                    south.Group.RemoveGroup(this);
-            }
+            CheckSurroundingGroupsForDeathHelper(ref west);
+            CheckSurroundingGroupsForDeathHelper(ref east);
+            CheckSurroundingGroupsForDeathHelper(ref north);
+            CheckSurroundingGroupsForDeathHelper(ref south);
         }
 
         /// <summary>
@@ -591,9 +532,9 @@ namespace SharpGo
             {
                 for (int x = -2; x <= Size; x++)
                 {
-                    if (x == -2 && y >= 0 && y <= Size)
+                    if (x == -2 && y >= 0 && y < Size)
                     {
-                        System.Console.Write(string.Format("{0:00}", y));
+                        System.Console.Write(string.Format("{0:00}", y + 1));
                         continue;
                     }
                     if (y == -2 && x == -2)
@@ -608,7 +549,7 @@ namespace SharpGo
                     }
                     if (y == -2 && x >= 0 && x < Size)
                     {
-                        System.Console.Write(letters[x]);
+                        System.Console.Write(" " + letters[x]);
                         continue;
                     }
                     if (x == -1 || x == Size)
@@ -618,20 +559,20 @@ namespace SharpGo
                     }
                     if (y == -1 || y == Size)
                     {
-                        System.Console.Write("-");
+                        System.Console.Write("--");
                         continue;
                     }
                     if (x < 0 || y < 0)
                         continue;
                     BoardPosition pos = GetStone(x, y);
                     if(pos == null)
-                        System.Console.Write(".");
+                        System.Console.Write(" .");
                     else if (pos.Contains == BoardPositionEntry.BLACK)
-                        System.Console.Write("X");
+                        System.Console.Write(" X");
                     else if (pos.Contains == BoardPositionEntry.WHITE)
-                        System.Console.Write("O");
+                        System.Console.Write(" O");
                     else
-                        System.Console.Write(".");
+                        System.Console.Write(" .");
                 }
                 System.Console.WriteLine("");
             }

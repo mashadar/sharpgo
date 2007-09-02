@@ -24,10 +24,11 @@ namespace SharpGo
             if (cmd == "exit")
                 return null;
 
-            if (cmd.Substring(0,3) == ";B[")
+            if (cmd.Substring(0, 3) == ";B[")
                 pos.Contains = BoardPositionEntry.BLACK;
             else if (cmd.Substring(0, 3) == ";W[")
                 pos.Contains = BoardPositionEntry.WHITE;
+            else return null;
 
             char sx = cmd[3];
             char sy = cmd[4];

@@ -161,11 +161,6 @@ namespace SharpGo
             Stones.Clear();
             board.Groups.Remove(this);
 
-            if (entry == BoardPositionEntry.WHITE)
-                board.CapturedWhiteStones += size;
-            if (entry == BoardPositionEntry.BLACK )
-                board.CapturedBlackStones += size;
-
             return size;
         }
     }

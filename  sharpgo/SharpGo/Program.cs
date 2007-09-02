@@ -19,10 +19,14 @@ namespace SharpGo
             {
                 zeile = sr.ReadLine();
                 BoardPosition p = parser.ParseString(zeile);
-                Console.WriteLine("Setting stone at " + p.x + "x" + p.y);
-                board.SetStone(p);
+                if (p != null)
+                {
+                    Console.WriteLine("Setting stone at " + p.x + "x" + p.y);
+                    board.SetStone(p);
+                }
             }
 
+            board.PrintToConsole();
             while ((pos = parser.ParseString(Console.ReadLine())) != null)
             {
                 board.SetStone(pos);
