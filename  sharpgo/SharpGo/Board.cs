@@ -12,7 +12,7 @@ namespace SharpGo
     {
         #region Members
         /// <summary>
-        /// The board's size
+        ///     The board's size
         /// </summary>
         private int size = 19;
 
@@ -33,31 +33,31 @@ namespace SharpGo
         private string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         /// <summary>
-        /// Number of captured black stones
+        ///     Number of captured black stones
         /// </summary>
         private int black_stones_captured = 0;
 
         /// <summary>
-        /// Number of captured white stones
+        ///     Number of captured white stones
         /// </summary>
         private int white_stones_captured = 0;
 
         /// <summary>
-        /// This one gets incremented every time a move is made
+        ///     This one gets incremented every time a move is made
         /// </summary>
         private int move_number = 0;
 
         /// <summary>
-        /// This is the maximum boardsize up to which computation time
-        /// is reasonable
+        ///     This is the maximum boardsize up to which computation time
+        ///     is reasonable
         /// </summary>
         public const int MaxBoardSize = 19;
 
         /// <summary>
-        /// A group of n stones can have at most 2(n + 1) liberties.
-        /// From this follows that an upper bound on the number
-        /// of liberties of a group on a board of size N^2 is
-        /// 2/3 (N^2 + 1)
+        ///     A group of n stones can have at most 2(n + 1) liberties.
+        ///     From this follows that an upper bound on the number
+        ///     of liberties of a group on a board of size N^2 is
+        ///     2/3 (N^2 + 1)
         /// </summary>
         public const int MaxLiberties = (2 * (MaxBoardSize * MaxBoardSize + 1) / 3);
         #endregion
@@ -141,7 +141,7 @@ namespace SharpGo
 
         #region Methods
         /// <summary>
-        /// Returns the stone south of the given position
+        ///     Returns the stone south of the given position
         /// </summary>
         /// <param name="pos"></param>
         /// <returns></returns>
@@ -158,7 +158,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// Returns the stone west of the given position
+        ///     Returns the stone west of the given position
         /// </summary>
         /// <param name="pos"></param>
         /// <returns></returns>
@@ -175,7 +175,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// Returns the stone north of the given position
+        ///     Returns the stone north of the given position
         /// </summary>
         /// <param name="pos"></param>
         /// <returns></returns>
@@ -192,7 +192,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// Returns the stone east of the given position
+        ///     Returns the stone east of the given position
         /// </summary>
         /// <param name="pos"></param>
         /// <returns></returns>
@@ -374,6 +374,7 @@ namespace SharpGo
             }
 
             CheckSurroundingGroupsForDeath(board[x, y]);
+            MoveNumber++;
         }
 
         /// <summary>
@@ -524,47 +525,59 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Flips the board horizontally
+        /// </summary>
+        public void FlipBoardHorizontally()
+        {
+            for (int x = 0; x < Size; x++)
+            {
+                for (int y = 0; y < Size; y++)
+                {
+                    BoardPositionEntry tmp = board[x, y].Contains;
+                    board[x, y].Contains = board[x, Size - y - 1].Contains;
+                    board[x, Size - y - 1].Contains = tmp;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Prints the board and the placed stones to the console
         /// </summary>
         public void PrintToConsole()
         {
-            for (int y = -2; y <= Size; y++)
+            for (int y = -1; y <= Size; y++)
             {
-                for (int x = -2; x <= Size; x++)
+                for (int x = -1; x <= Size; x++)
                 {
-                    if (x == -2 && y >= 0 && y < Size)
+                    if ((x == -1 && y >= 0 && y < Size) ||
+                        (x == Size && y >= 0 && y < Size))
                     {
-                        System.Console.Write(string.Format("{0:00}", y + 1));
+                        System.Console.Write(string.Format(" {0:00}", y + 1));
                         continue;
                     }
-                    if (y == -2 && x == -2)
+                    if ((y == -1 && x == -1) ||
+                        (y == Size && x == -1))
                     {
-                        System.Console.Write("  ");
+                        System.Console.Write("   ");
                         continue;
                     }
-                    if (y == -1 && x == -2)
-                    {
-                        System.Console.Write("  ");
-                        continue;
-                    }
-                    if (y == -2 && x >= 0 && x < Size)
+                    if ((y == -1 && x >= 0 && x < Size) ||
+                        (y == Size && x >= 0 && x < Size))
                     {
                         System.Console.Write(" " + letters[x]);
                         continue;
                     }
-                    if (x == -1 || x == Size)
-                    {
-                        System.Console.Write(" |");
-                        continue;
-                    }
-                    if (y == -1 || y == Size)
-                    {
-                        System.Console.Write("--");
-                        continue;
-                    }
                     if (x < 0 || y < 0)
                         continue;
-                    BoardPosition pos = GetStone(x, y);
+                    BoardPosition pos;
+                    try
+                    {
+                        pos = GetStone(x, y);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                     if(pos == null)
                         System.Console.Write(" .");
                     else if (pos.Contains == BoardPositionEntry.BLACK)
@@ -576,8 +589,9 @@ namespace SharpGo
                 }
                 System.Console.WriteLine("");
             }
-            System.Console.WriteLine("White's captured stones: " + CapturedBlackStones);
-            System.Console.WriteLine("Black's captured stones: " + CapturedWhiteStones);
+            System.Console.WriteLine("Move Nr. " + MoveNumber);
+            System.Console.WriteLine("White (O) has captured " + CapturedBlackStones + " stones");
+            System.Console.WriteLine("Black (X) has captured " + CapturedWhiteStones + " stones");
         }
         #endregion
     }
