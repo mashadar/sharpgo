@@ -17,18 +17,18 @@ namespace SharpGo
         private int size = 19;
 
         /// <summary>
-        /// 
+        ///     2-Dimensional Array containing the placed stones
         /// </summary>
         private BoardPosition[,] board;
 
         /// <summary>
-        /// 
+        ///     List of groups
         /// </summary>
         private System.Collections.Generic.List<Group> groups =
             new System.Collections.Generic.List<Group>();
 
         /// <summary>
-        /// 
+        ///     
         /// </summary>
         private string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -64,7 +64,7 @@ namespace SharpGo
 
         #region Accessors
         /// <summary>
-        /// 
+        ///     Returns the board's size
         /// </summary>
         public int Size
         {
@@ -79,7 +79,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Number of captured black stones
         /// </summary>
         public int CapturedBlackStones
         {
@@ -94,7 +94,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Number of captured white stones
         /// </summary>
         public int CapturedWhiteStones
         {
@@ -109,7 +109,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Current movenumber
         /// </summary>
         public int MoveNumber
         {
@@ -124,7 +124,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Get/Set groups
         /// </summary>
         public System.Collections.Generic.List<Group> Groups
         {
@@ -143,8 +143,12 @@ namespace SharpGo
         /// <summary>
         ///     Returns the stone south of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone south of the given position
+        /// </returns>
         public BoardPosition South(BoardPosition pos)
         {
             try
@@ -160,8 +164,12 @@ namespace SharpGo
         /// <summary>
         ///     Returns the stone west of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone west of the given position
+        /// </returns>
         public BoardPosition West(BoardPosition pos)
         {
             try
@@ -177,8 +185,12 @@ namespace SharpGo
         /// <summary>
         ///     Returns the stone north of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone north of the given position
+        /// </returns>
         public BoardPosition North(BoardPosition pos)
         {
             try
@@ -194,8 +206,12 @@ namespace SharpGo
         /// <summary>
         ///     Returns the stone east of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone east of the given position
+        /// </returns>
         public BoardPosition East(BoardPosition pos)
         {
             try
@@ -209,10 +225,14 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Returns the stone south-west of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone south-west of the given position
+        /// </returns>
         public BoardPosition SouthWest(BoardPosition pos)
         {
             try
@@ -226,10 +246,14 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Returns the stone south-east of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone south-east of the given position
+        /// </returns>
         public BoardPosition SouthEast(BoardPosition pos)
         {
             try
@@ -243,10 +267,14 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Returns the stone north-west of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone north-west of the given position
+        /// </returns>
         public BoardPosition NorthWest(BoardPosition pos)
         {
             try
@@ -260,10 +288,14 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Returns the stone north-east of the given position
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     The stone to go from
+        /// </param>
+        /// <returns>
+        ///     The stone north-east of the given position
+        /// </returns>
         public BoardPosition NorthEast(BoardPosition pos)
         {
             try
@@ -277,11 +309,18 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Checks if the two given stones are
+        ///     direct neighbors
         /// </summary>
-        /// <param name="pos1"></param>
-        /// <param name="pos2"></param>
-        /// <returns></returns>
+        /// <param name="pos1">
+        ///     The first stone to check
+        /// </param>
+        /// <param name="pos2">
+        ///     The second stone to check
+        /// </param>
+        /// <returns>
+        ///     True if they are neighbours
+        /// </returns>
         public bool DirectNeighbors(BoardPosition pos1, BoardPosition pos2)
         { 
             return (pos1 == South(pos2)) ||
@@ -291,11 +330,18 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Checks if the two given stones are
+        ///     diagonal neighbors
         /// </summary>
-        /// <param name="pos1"></param>
-        /// <param name="pos2"></param>
-        /// <returns></returns>
+        /// <param name="pos1">
+        ///     The first stone to check
+        /// </param>
+        /// <param name="pos2">
+        ///     The second stone to check
+        /// </param>
+        /// <returns>
+        ///     True if they are diagonal neighbours
+        /// </returns>
         public bool DiagonalNeighbors(BoardPosition pos1, BoardPosition pos2)
         {
             return (pos1 == SouthWest(pos2)) ||
@@ -305,7 +351,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Constructor
         /// </summary>
         public Board()
         {
@@ -320,9 +366,11 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Constructor
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="s">
+        ///     The board's size
+        /// </param>
         public Board(int s)
         {
             Size = s;
@@ -337,11 +385,19 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Returns the stone at position (x, y)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
+        /// <param name="x">
+        ///     x-Coordinate
+        /// </param>
+        /// <param name="y">
+        ///     y-Coordinate
+        /// </param>
+        /// <returns>
+        ///     Returns the stone at the given position.
+        ///     An exception is thrown if the coordinates
+        ///     are out of bound.
+        /// </returns>
         public BoardPosition GetStone(int x, int y)
         {
             if(x < 0 || x >= size)
@@ -352,11 +408,20 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Places a new stone on the board at the
+        ///     given position. This method then checks
+        ///     if the new stone connects some groups
+        ///     and if it kills any surrounding groups.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="entry"></param>
+        /// <param name="x">
+        ///     The new stone's x-Coordinate
+        /// </param>
+        /// <param name="y">
+        ///     The new stone's y-Coordinate
+        /// </param>
+        /// <param name="entry">
+        ///     The new stone's color
+        /// </param>
         public void SetStone(int x, int y, BoardPositionEntry entry)
         {
             if(x < 0 || x >= size)
@@ -378,14 +443,30 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Checks if the given point
+        ///     and the surrounding one's 
+        ///     connect to a new bigger group.
         /// </summary>
-        /// <param name="pos"></param>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="p3"></param>
-        /// <param name="p4"></param>
-        /// <param name="flag"></param>
+        /// <param name="pos">
+        ///     The position to check from
+        /// </param>
+        /// <param name="p1">
+        /// 
+        /// </param>
+        /// <param name="p2">
+        /// 
+        /// </param>
+        /// <param name="p3">
+        /// 
+        /// </param>
+        /// <param name="p4">
+        /// 
+        /// </param>
+        /// <param name="flag">
+        ///     This flag is set to true if the stone connects
+        ///     to a new group. Otherwise, the stone itself
+        ///     creates a new group.
+        /// </param>
         protected void ConnectToGroupsHelper(ref BoardPosition pos,
             ref BoardPosition p1, ref BoardPosition p2, ref BoardPosition p3,
             ref BoardPosition p4, ref bool flag)
@@ -425,7 +506,13 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Checks if the new placed stone
+        ///     connects 2 groups or itself is connected
+        ///     to a group.
+        ///     Otherwise, the stone creates a new group.
+        ///     In the opening, many groups will be created,
+        ///     but later they'll all converge into 
+        ///     few big groups.
         /// </summary>
         public void ConnectToGroups(BoardPosition pos)
         {
@@ -436,10 +523,14 @@ namespace SharpGo
             BoardPosition north = North(pos);
             BoardPosition south = South(pos);
 
-            ConnectToGroupsHelper(ref pos, ref west, ref east, ref north, ref south, ref flag);
-            ConnectToGroupsHelper(ref pos, ref east, ref west, ref north, ref south, ref flag);
-            ConnectToGroupsHelper(ref pos, ref north, ref west, ref east, ref south, ref flag);
-            ConnectToGroupsHelper(ref pos, ref south, ref west, ref east, ref north, ref flag);
+            ConnectToGroupsHelper(ref pos, ref west, ref east, 
+                ref north, ref south, ref flag);
+            ConnectToGroupsHelper(ref pos, ref east, ref west, 
+                ref north, ref south, ref flag);
+            ConnectToGroupsHelper(ref pos, ref north, ref west, 
+                ref east, ref south, ref flag);
+            ConnectToGroupsHelper(ref pos, ref south, ref west, 
+                ref east, ref north, ref flag);
 
             if (!flag)
             {
@@ -450,10 +541,14 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Checks if the group is still alive
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
+        /// <param name="pos">
+        ///     A stone belonging to that group
+        /// </param>
+        /// <returns>
+        ///     Returns true if the group is still alive. Otherwise, false
+        /// </returns>
         public bool CheckForFreeLiberties(BoardPosition pos)
         {
             if (pos != null && pos.Group != null)
@@ -467,9 +562,14 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     A little helper method to check if a group is dead.
+        ///     The free liberties are checked and if they are = 0,
+        ///     then the group is removed and the captured stones
+        ///     counter increases
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="pos">
+        ///     A stone of the group to check for death
+        /// </param>
         protected void CheckSurroundingGroupsForDeathHelper(ref BoardPosition pos)
         {
             if (pos == null)
@@ -489,9 +589,12 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Checks if the new placed stone kills any 
+        ///     surrounding groups
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="pos">
+        ///     The new placed stones
+        /// </param>
         public void CheckSurroundingGroupsForDeath(BoardPosition pos)
         {
             BoardPosition west = West(pos);
@@ -506,7 +609,7 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     
         /// </summary>
         /// <param name="pos"></param>
         public void SetStone(BoardPosition pos)
@@ -515,9 +618,11 @@ namespace SharpGo
         }
 
         /// <summary>
-        /// 
+        ///     Removes the stone at the given position
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="pos">
+        ///     The stone to remove
+        /// </param>
         public void RemoveStone(BoardPosition pos)
         {
             board[pos.x, pos.y].Contains = BoardPositionEntry.EMTPY;
